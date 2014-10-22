@@ -1,0 +1,65 @@
+{
+    "baseInfo": {
+        "method": "get",
+        "name": "首页获取爆款推荐列表接口",
+        "url": "/info.3g.qq.com/g/s"
+    },
+
+    "requestField": {
+        "sid": {
+            "type": "string",
+            "describe": "用户ID，登录末登录时都需要",
+            "value": "",
+            "isMust": true
+        },
+        "action": {
+            "type": "string",
+            "describe": "首页焦点图action",
+            "value": "top_operating",
+            "isMust": true
+        },
+        "limit": {
+            "type": "int",
+            "describe": "显示数目限制",
+            "value": 6,
+            "isMust": false
+        }
+    },
+
+    "responseField": {
+        "sid": {
+            "type": "string",
+            "describe": "用户ID，登录末登录时都需要",
+            "value": ""
+        },
+        "action": {
+            "type": "string",
+            "describe": "首页焦点图action",
+            "value": "top_operating"
+        },
+        "limit": {
+            "type": "int",
+            "describe": "显示数目限制",
+            "value": 6
+        }
+    },
+
+    "reponseData": {
+        "data": {
+            "record": [
+                {
+                    "title": "攻略",
+                    "link_image": "/images/2014/10/141394244500837660.jpg",
+                    "link_url": "aid=trip_ss&id=trip_20141021042664"
+                },
+                {
+                    "title": "去哪儿网",
+                    "link_image": "/images/2014/10/141334854813998230.jpg",
+                    "link_url": "/g/s?aid=travel#list/id=4"
+                }
+            ]
+        },
+        "code": 0,
+        "msg": "成功"
+    }
+}
