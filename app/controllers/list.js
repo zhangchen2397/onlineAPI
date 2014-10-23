@@ -8,8 +8,7 @@ exports.list = function( req, res ) {
     Category.find( {
         _id: cateId
     } ).populate( {
-        path: 'apis',
-        options: { limit: 3 }
+        path: 'apis'
     } ).exec( function( err, categorys ) {
         if ( err ) {
             console.log( err );

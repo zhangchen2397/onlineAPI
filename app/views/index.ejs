@@ -2,17 +2,26 @@
 <script src="/js/page/index.js"></script>
 <link href="/css/index.css" rel="stylesheet" type="text/css" />
 
-<%= title %><br/>
+<h1><%= title %></h1>
 
-<% for( var i = 0; i < catetories.length; i++ ) { %>
-    <% var item = catetories[ i ] %>
-    <p><a href="/list/<%= item._id %>"><%= item.name %></a></p>
+<% for( var i = 0; i < categorys.length; i++ ) { %>
+    <% var cateItem = categorys[ i ] %>
+    <p><a href="/list/<%= cateItem._id %>"><%= cateItem.name %></a></p>
+
+    <% for( var j = 0; j < cateItem.apis.length; j++ ) { %>
+        <% var item = cateItem.apis[ j ] %>
+        <p><%= item.baseInfo %></p>
+        <p><%= item.requestField %></p>
+        <p><%= item.responseField %></p>
+        <p><%= item.responseData %></p>
+        <p>-------------------------</p>
+    <% } %>
 <% } %>
 
 <div class="category">
     <select name="category" id="J-cate-slt">
-        <% for( var i = 0; i < catetories.length; i++ ) { %>
-        <% var item = catetories[ i ] %>
+        <% for( var i = 0; i < categorys.length; i++ ) { %>
+        <% var item = categorys[ i ] %>
             <option value="<%= item._id %>"><%= item.name %></option>
         <% } %>
         <option value="">新增</option>
