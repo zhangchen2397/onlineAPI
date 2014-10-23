@@ -1,0 +1,32 @@
+{
+  "name": "onlineAPI",
+  "version": "0.0.1",
+  "readmeFilename": "README.md",
+  "description": "manage and edit api online",
+  "homepage": "https://github.com/zhangchen2397/onlineAPI",
+  "keywords": [
+    "onlineAPI",
+    "nodejs"
+  ],
+  "dependencies": {
+    "async": "~0.2.10",
+    "connect-mongo": "~0.3.3",
+    "crypto": "~0.0.3",
+    "express": "~3.4.8",
+    "latest": "~0.1.2",
+    "moment": "~2.5.1",
+    "mongoose": "~3.8.14",
+    "underscore": "~1.6.0"
+  },
+  "author": "zhangchen2397",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/zhangchen2397/onlineAPI"
+  },
+  "main": "./app.js",
+  "license": "MIT",
+  "devDependencies": {
+    "ejs": "^1.0.0",
+    "jade": "^1.7.0"
+  }
+}

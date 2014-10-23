@@ -1,0 +1,26 @@
+<script src="/js/lib/jquery-1.11.1.min.js"></script>
+<script src="/js/page/index.js"></script>
+<link href="/css/index.css" rel="stylesheet" type="text/css" />
+
+<%= title %><br/>
+
+<% for( var i = 0; i < catetories.length; i++ ) { %>
+    <% var item = catetories[ i ] %>
+    <p><a href="/list/<%= item._id %>"><%= item.name %></a></p>
+<% } %>
+
+<div class="category">
+    <select name="category" id="J-cate-slt">
+        <% for( var i = 0; i < catetories.length; i++ ) { %>
+        <% var item = catetories[ i ] %>
+            <option value="<%= item._id %>"><%= item.name %></option>
+        <% } %>
+        <option value="">新增</option>
+    </select>
+
+    <input id="J-new-cate-ipt" class="hide" type="text" name="category[name]" />
+
+    <p><input id="J-newapi-btn" type="button" value="提交" /></p>
+</div>
+
+

@@ -1,0 +1,14 @@
+<script src="/js/lib/jquery-1.11.1.min.js"></script>
+
+<p><%= category.name %></p>
+
+<% for( var i = 0; i < category.apis.length; i++ ) { %>
+    <% var item = category.apis[ i ] %>
+    <p><%= item.baseInfo %></p>
+    <p><%= item.requestField %></p>
+    <p><%= item.responseField %></p>
+    <p><%= item.responseData %></p>
+    <p>-------------------------</p>
+<% } %>
+
+

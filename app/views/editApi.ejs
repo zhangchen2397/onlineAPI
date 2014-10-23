@@ -1,0 +1,26 @@
+<script src="/js/lib/jquery-1.11.1.min.js"></script>
+
+<style>
+    textarea {
+        width: 500px;
+        height: 100px;
+    }
+</style>
+
+<%= cateId %><br/>
+
+<form action="/api/save" method="post">
+    <p><textarea name="api[baseInfo]" placeholder="基本信息"></textarea></p>
+    <p><textarea name="api[requestField]" placeholder="请求字段"></textarea></p>
+    <p><textarea name="api[responseField]" placeholder="响应字段"></textarea></p>
+    <p><textarea name="api[responseData]" placeholder="响应数据示例"></textarea></p>
+    <input type="hidden" name="api[cateId]" value="<%= cateId %>" />
+    <input type="hidden" name="id" value="" />
+    <input type="hidden" name="api[author]" value="" />
+
+    <input type="submit" value="提交" />
+</form>
+
+
+
+
