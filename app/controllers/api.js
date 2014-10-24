@@ -1,24 +1,40 @@
-var mongoose = require( 'mongoose' ),
+var _ = require( 'underscore' ),
+    mongoose = require( 'mongoose' ),
     Category = mongoose.model( 'Category' ),
     Api = mongoose.model( 'Api' );
 
 exports.add = function( req, res ) {
     var cateId = req.query.cateId;
 
-    res.render( 'editApi', {
+    res.render( 'api', {
         title: '新增API',
-        cateId: cateId
+        cateId: cateId,
+        api: {}
     } );
 };
 
 exports.save = function( req, res ) {
     var postApiObj = req.body.api,
         cateId = postApiObj.cateId,
-        id = req.body.id,
+        id = postApiObj._id,
         api = null;
 
     if ( id ) {
+        Api.findById( id, function( err, api ) {
+            if ( err ) {
+                console.log( err );
+            }
 
+            api = _.extend( api, postApiObj );
+
+            api.save( function( err, api ) {
+                if ( err ) {
+                    console.log( err );
+                }
+
+                res.redirect( '/' );
+            } );
+        } );
     } else {
         api = new Api( postApiObj );
 
@@ -37,15 +53,46 @@ exports.save = function( req, res ) {
 
                     res.redirect( '/' );
                 } );
-            } )
+            } );
         } );
     }
 };
 
 exports.update = function( req, res ) {
-    //to do list
+    var id = req.params.id;
+
+    Api.findById( id, function( err, api ) {
+        if ( err ) {
+            console.log( err );
+        }
+
+        res.render( 'api', {
+            title: 'api更新',
+            api: api
+        } );
+    } );
 };
 
 exports.delete = function( req, res ) {
-    //to do list
+    var id = req.params.id;
+    var responseJson = {
+        status: {
+            code: 0,
+            msg: null
+        },
+        data: {
+
+        }
+    };
+
+    Api.remove( {
+        _id: id
+    }, function( err, api ) {
+        if ( err ) {
+            console.log( err );
+            responseJson.status.code = 1;
+        }
+
+        res.json( responseJson );
+    } );
 };

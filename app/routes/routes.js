@@ -15,14 +15,15 @@ module.exports = function( app ) {
     app.get( '/api/add', Api.add );
 
     //编辑页
-    //app.get( '/api/update', Api.update );
-
-    
-
-    //异步接口
-    app.post( '/category/add', Category.add );
-    //app.delete( '/api/delete', Api.delete );
+    app.get( '/api/update/:id', Api.update );
 
     //同步接口
     app.post( '/api/save', Api.save );
+
+    //异步接口
+    app.post( '/category/add', Category.add );
+    app.delete( '/api/delete/:id', Api.delete );
+
+    app.delete( '/category/delete/:id', Category.delete );
+    app.post( '/category/update/:id', Category.update );
 };

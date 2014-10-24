@@ -4,6 +4,21 @@
 
 <h1><%= title %></h1>
 
+<div class="category">
+    <select name="category" id="J-cate-slt">
+        <% for( var i = 0; i < categorys.length; i++ ) { %>
+        <% var item = categorys[ i ] %>
+            <option value="<%= item._id %>"><%= item.name %></option>
+        <% } %>
+        <option value="">新增</option>
+    </select>
+
+    <input id="J-new-cate-ipt" class="hide" type="text" name="category[name]" />
+
+    <p><input id="J-newapi-btn" type="button" value="提交" /></p>
+</div>
+
+
 <% for( var i = 0; i < categorys.length; i++ ) { %>
     <% var cateItem = categorys[ i ] %>
     <p><a href="/list/<%= cateItem._id %>"><%= cateItem.name %></a></p>
@@ -18,18 +33,5 @@
     <% } %>
 <% } %>
 
-<div class="category">
-    <select name="category" id="J-cate-slt">
-        <% for( var i = 0; i < categorys.length; i++ ) { %>
-        <% var item = categorys[ i ] %>
-            <option value="<%= item._id %>"><%= item.name %></option>
-        <% } %>
-        <option value="">新增</option>
-    </select>
-
-    <input id="J-new-cate-ipt" class="hide" type="text" name="category[name]" />
-
-    <p><input id="J-newapi-btn" type="button" value="提交" /></p>
-</div>
 
 
