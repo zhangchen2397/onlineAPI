@@ -1,0 +1,32 @@
+<script src="/js/lib/jquery-1.11.1.min.js"></script>
+
+<style>
+    textarea {
+        width: 500px;
+        height: 100px;
+    }
+</style>
+
+<h1><%= title %></h1>
+
+<form action="/api/save" method="post">
+    
+    <p><textarea name="api[baseInfo]" placeholder="基本信息"><%= api.baseInfo || '' %></textarea></p>
+    <p><textarea name="api[requestField]" placeholder="请求字段"><%= api.requestField || '' %></textarea></p>
+    <p><textarea name="api[responseField]" placeholder="响应字段"><%= api.responseField || '' %></textarea></p>
+    <p><textarea name="api[responseData]" placeholder="响应数据示例"><%= api.responseData || '' %></textarea></p>
+    <input type="hidden" name="api[author]" value="<%= api.author || '' %>" />
+    
+    <% if ( api._id ) { %>
+        <input type="hidden" name="api[cateId]" value="<%= api.cateId %>" />
+        <input type="hidden" name="api[_id]" value="<%= api._id || '' %>" />
+    <% } else { %>
+        <input type="hidden" name="api[cateId]" value="<%= cateId %>" />
+    <% } %>
+
+    <input type="submit" value="提交" />
+</form>
+
+
+
+

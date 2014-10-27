@@ -3,7 +3,7 @@ var express = require( 'express' ),
     fs = require( 'fs' ),
     mongoose = require( 'mongoose' );
 
-var port = process.env.PORT || 3000,
+var port = process.env.PORT || 1337,
     dbUrl = 'mongodb://localhost/api',
     app = express();
 
