@@ -4,7 +4,7 @@ var mongoose = require( 'mongoose' ),
 exports.index = function( req, res ) {
     Category.find( {} ).populate( {
         path: 'apis',
-        options: { limit: 2 }
+        options: { limit: 5 }
     } ).exec( function( err, categorys ) {
         if ( err ) {
             console.log( err );

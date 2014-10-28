@@ -1,31 +1,116 @@
-<script src="/js/lib/jquery-1.11.1.min.js"></script>
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="4g.qq.com api managment platform">
+    <meta name="keywords" content="API">
+    <meta name="author" content="samczhang@tencent.com">
+    <title><%= title %></title>
 
-<style>
-    textarea {
-        width: 500px;
-        height: 100px;
-    }
-</style>
+    <link href="/js/lib/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <link href="/js/lib/bootstrap/css/bootstrap-theme.min.css" rel="stylesheet" type="text/css" />
+    <link href="/css/common.css" rel="stylesheet" type="text/css" />
 
-<h1><%= title %></h1>
+    <script src="/js/lib/jquery-1.11.1.min.js"></script>
+    <script src="/js/lib/bootstrap/js/bootstrap.min.js"></script>
+    <script src="/js/lib/ace/ace.js"></script>
+    <script src="/js/lib/beautify.js"></script>
 
-<form action="/api/save" method="post">
-    
-    <p><textarea name="api[baseInfo]" placeholder="基本信息"><%= api.baseInfo || '' %></textarea></p>
-    <p><textarea name="api[requestField]" placeholder="请求字段"><%= api.requestField || '' %></textarea></p>
-    <p><textarea name="api[responseField]" placeholder="响应字段"><%= api.responseField || '' %></textarea></p>
-    <p><textarea name="api[responseData]" placeholder="响应数据示例"><%= api.responseData || '' %></textarea></p>
-    <input type="hidden" name="api[author]" value="<%= api.author || '' %>" />
-    
-    <% if ( api._id ) { %>
+    <script src="/js/page/api.js"></script>
+</head>
+
+<body>
+
+<div id="header" class="navbar navbar-inverse" role="navigation">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#"><span style="font-size: 20px;">手腾</span>前端技术博客</a>
+        </div>
+
+        <div class="collapse navbar-collapse">
+            <ul class="nav navbar-nav">
+                <li class="active"><a href="#">接口文档</a></li>
+                <li><a href="#about">组件文档</a></li>
+                <li><a href="#contact">规范规范</a></li>
+                <li><a href="#contact">前端发布平台</a></li>
+
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-plus" style="margin-right:3px;"></span>发布新任务 <span class="caret"></span></a>
+                    <ul class="dropdown-menu" id="dropdown-menu" role="menu">
+                        <li><a href="#"><span class="glyphicon glyphicon-pencil" style="margin-right:5px;"></span>新建API</a></li>
+                        <li class="divider"></li>
+                        <li><a href="#"><span class="glyphicon glyphicon-edit" style="margin-right:5px;"></span>新建组件文档</a></li>
+                        <li class="divider"></li>
+                        <li><a href="#"><span class="glyphicon glyphicon-send" style="margin-right:5px;"></span>上线管理</a></li>
+                    </ul>
+                </li>
+            </ul>
+
+            <form class="navbar-form navbar-right" role="search">
+                <div class="form-group">
+                    <input type="text" class="form-control" placeholder="Search">
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="container main-con">
+    <form action="/api/save" method="post" id="api-form">
+        <div class="edi-api-box">
+            <h4><span class="glyphicon glyphicon-pushpin"></span>接口基本信息</h4>
+            <pre id="base-info" class="code-edit" style="height: 106px;" data-json="<%= api.baseInfo || '' %>"></pre>
+        </div>
+
+        <div class="edi-api-box">
+            <h4><span class="glyphicon glyphicon-pushpin"></span>请求字段说明</h4>
+            <pre id="request-info" class="code-edit" style="height: 400px;" data-json="<%= api.requestField || '' %>"></pre>
+        </div>
+
+        <div class="edi-api-box">
+            <h4><span class="glyphicon glyphicon-pushpin"></span>返回主要字段说明</h4>
+            <pre id="response-info" class="code-edit" style="height: 340px;" data-json="<%= api.responseField || '' %>"></pre>
+        </div>
+
+        <div class="edi-api-box">
+            <h4><span class="glyphicon glyphicon-pushpin"></span>返回数据示例</h4>
+            <pre id="demo-info" class="code-edit" style="height: 300px;" data-json="<%= api.responseData || '' %>"></pre>
+        </div>  
+
+        <input type="hidden" class="json-ipt" data-item="base" name="api[baseInfo]" value="" />
+        <input type="hidden" class="json-ipt" data-item="request" name="api[requestField]" value="" />
+        <input type="hidden" class="json-ipt" data-item="response" name="api[responseField]" value="" />
+        <input type="hidden" class="json-ipt" data-item="demo" name="api[responseData]" value="" />
+
+        <input type="hidden" name="api[author]" value="<%= api.author || '' %>" />
         <input type="hidden" name="api[cateId]" value="<%= api.cateId %>" />
-        <input type="hidden" name="api[_id]" value="<%= api._id || '' %>" />
-    <% } else { %>
-        <input type="hidden" name="api[cateId]" value="<%= cateId %>" />
-    <% } %>
 
-    <input type="submit" value="提交" />
-</form>
+        <% if ( api._id ) { %>
+            <input type="hidden" name="api[_id]" value="<%= api._id || '' %>" />
+        <% } %>
+
+        <div class="add-api">
+            <button type="button" class="btn btn-primary btn-lg" id="submit-btn">
+                <span class="glyphicon glyphicon-cloud-upload" style="margin-right:6px;"></span>新增接口
+            </button>
+        </div>
+    </form>
+</div>
+
+</body>
+</html>
+
+
+
+
 
 
 

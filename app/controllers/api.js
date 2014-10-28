@@ -4,12 +4,14 @@ var _ = require( 'underscore' ),
     Api = mongoose.model( 'Api' );
 
 exports.add = function( req, res ) {
-    var cateId = req.query.cateId;
+    var cateId = req.query.cateId,
+        api = {};
+
+    api.cateId = cateId;
 
     res.render( 'api', {
         title: '新增API',
-        cateId: cateId,
-        api: {}
+        api: api
     } );
 };
 

@@ -9,21 +9,23 @@
     <meta name="author" content="samczhang@tencent.com">
     <title><%= title %></title>
 
-    <link href="/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
-    <link href="/css/bootstrap-theme.min.css" rel="stylesheet" type="text/css" />
+    <link href="/js/lib/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <link href="/js/lib/bootstrap/css/bootstrap-theme.min.css" rel="stylesheet" type="text/css" />
     <link href="/css/common.css" rel="stylesheet" type="text/css" />
 
     <link href="/css/index.css" rel="stylesheet" type="text/css" />
 
     <script src="/js/lib/jquery-1.11.1.min.js"></script>
-    <script src="/js/lib/bootstrap.min.js"></script>
+    <script src="/js/lib/bootstrap/js/bootstrap.min.js"></script>
+    <script src="/js/lib/ace/ace.js"></script>
+    <script src="/js/lib/beautify.js"></script>
 
     <script src="/js/page/index.js"></script>
 </head>
 
 <body>
 
-<div class="navbar navbar-inverse" role="navigation">
+<div id="header" class="navbar navbar-inverse" role="navigation">
     <div class="container">
         <div class="navbar-header">
             <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
@@ -63,86 +65,160 @@
     </div>
 </div>
 
-<div class="container">
-    <div class="cate-list">
-        <h3><a href="">旅游</a></h3>
+<div class="container main-con">
+    <% for( var i = 0; i < categorys.length; i++ ) { %>
+        <% var cateItem = categorys[ i ] %>
+        <div class="cate-list">
+            <h3><a href="/list/<%= cateItem._id %>"><%= cateItem.name %></a></h3>
 
-        <div class="panel-group">
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <h4 class="panel-title" data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
-                      Collapsible Group Item #1
-                    </h4>
-                </div>
+            <div class="panel-group" id="api-list">
+                <% for( var j = 0; j < cateItem.apis.length; j++ ) { %>
+                    <% var item = cateItem.apis[ j ] %>
+                    <% var baseInfo = JSON.parse( item.baseInfo ) %>
+                    <% var requestInfo = JSON.parse( item.requestField ) %>
+                    <% var responseInfo = JSON.parse( item.responseField ) %>
 
-                <div id="collapseOne" class="panel-collapse collapse in">
-                    <div class="panel-body">
-                        Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+                    <div class="panel panel-default panel-<%= item._id %>">
+                        <div class="panel-heading" data-toggle="collapse" data-parent="#accordion" href="#collapse<%= i %><%= j %>">
+                            <div class="pull-right act">
+                                <a href="/api/update/<%= item._id %>" class="edit-btn"><button type="button" class="btn btn-info btn-xs">edit</button></a>
+                                <button type="button" class="btn btn-danger btn-xs delete-btn" data-title="<%= baseInfo.name %>" data-id="<%= item._id %>" data-toggle="modal" data-target="#deleteDialog">delete</button>
+                            </div>
+                            <div class="api-brf">
+                                <span class="label label-success"><%= baseInfo.method %></span>
+                                <span class="t"><%= baseInfo.name %></span>
+                                <span class="url"><%= baseInfo.url %></span>
+                                <span class="label label-default">by samczhang</span>
+                            </div>
+                        </div>
+
+                        <div id="collapse<%= i %><%= j %>" class="panel-collapse collapse">
+                            <div class="panel-body">
+                                <div class="box request-box">
+                                    <h4><span class="glyphicon glyphicon-pushpin"></span>请求参数说明</h4>
+                                    <table class="table table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>#</th>
+                                                <th>字段名</th>
+                                                <th>必传</th>
+                                                <th>默认值</th>
+                                                <th>类型</th>
+                                                <th>说明</th>
+                                            </tr>
+                                        </thead>
+
+                                        <tbody>
+                                            <% for ( var ikey in requestInfo )  { %>
+                                                <% var rqt = requestInfo[ ikey ] %>
+                                                <% var iidx = 0 %>
+                                                <% iidx++ %>
+                                                <tr>
+                                                    <td><%= iidx %></td>
+                                                    <td><%= ikey %></td>
+                                                    <td><%= rqt.isMust ? 'Y' : 'N' %></td>
+                                                    <td><%= rqt.value || '-' %></td>
+                                                    <td><%= rqt.type %></td>
+                                                    <td><%= rqt.describe %></td>
+                                                </tr>
+                                            <% } %>
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                                <div class="box request-box">
+                                    <h4><span class="glyphicon glyphicon-pushpin"></span>响应字段说明</h4>
+                                    <table class="table table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>#</th>
+                                                <th>字段名</th>
+                                                <th>类型</th>
+                                                <th>返回值</th>
+                                                <th>说明</th>
+                                            </tr>
+                                        </thead>
+
+                                        <tbody>
+                                            <% for ( var jkey in responseInfo )  { %>
+                                                <% var rse = responseInfo[ jkey ] %>
+                                                <% var jidx = 0 %>
+                                                <% jidx++ %>
+                                                <tr>
+                                                    <td><%= jidx %></td>
+                                                    <td><%= jkey %></td>
+                                                    <td><%= rse.type %></td>
+                                                    <td><%= rse.value || '-' %></td>
+                                                    <td><%= rse.describe %></td>
+                                                </tr>
+                                            <% } %>
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                                <div class="box request-box">
+                                    <h4><span class="glyphicon glyphicon-pushpin"></span>响应数据示例</h4>
+                                    <pre id="editor<%= i %><%= j %>" class="code-edit" data-json="<%= item.responseData %>" data-idx="<%= i %><%= j %>"></pre>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </div>
-
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <h4 class="panel-title" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">
-                      Collapsible Group Item #1
-                    </h4>
-                </div>
-                
-                <div id="collapseTwo" class="panel-collapse collapse">
-                    <div class="panel-body">
-                        Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
-                    </div>
-                </div>
-            </div>
-
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <h4 class="panel-title" data-toggle="collapse" data-parent="#accordion" href="#collapseThree">
-                      Collapsible Group Item #1
-                    </h4>
-                </div>
-                
-                <div id="collapseThree" class="panel-collapse collapse">
-                    <div class="panel-body">
-                        Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
-                    </div>
-                </div>
+                <% } %>
             </div>
         </div>
-    </div>
-
-</div>
-
-
-<div class="category">
-    <select name="category" id="J-cate-slt">
-        <% for( var i = 0; i < categorys.length; i++ ) { %>
-        <% var item = categorys[ i ] %>
-            <option value="<%= item._id %>"><%= item.name %></option>
-        <% } %>
-        <option value="">新增</option>
-    </select>
-
-    <input id="J-new-cate-ipt" class="hide" type="text" name="category[name]" />
-
-    <p><input id="J-newapi-btn" type="button" value="提交" /></p>
-</div>
-
-
-<% for( var i = 0; i < categorys.length; i++ ) { %>
-    <% var cateItem = categorys[ i ] %>
-    <p><a href="/list/<%= cateItem._id %>"><%= cateItem.name %></a></p>
-
-    <% for( var j = 0; j < cateItem.apis.length; j++ ) { %>
-        <% var item = cateItem.apis[ j ] %>
-        <p><%= item.baseInfo %></p>
-        <p><%= item.requestField %></p>
-        <p><%= item.responseField %></p>
-        <p><%= item.responseData %></p>
-        <p>-------------------------</p>
     <% } %>
-<% } %>
+
+    <div class="add-api">
+        <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#addApiDialog"><span class="glyphicon glyphicon-cloud-upload" style="margin-right:6px;"></span>新增接口</button>
+    </div>
+</div>
+
+
+<!-- confirm delete Modal -->
+<div class="modal fade" id="deleteDialog" tabindex="-1" role="dialog" aria-labelledby="deleteDialogLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <h4 class="modal-title" id="deleteDialogLabel">操作提示</h4>
+      </div>
+      <div class="modal-body"></div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" id="confirm-delete-btn">确认删除</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- add api Modal -->
+<div class="modal fade" id="addApiDialog" tabindex="-1" role="dialog" aria-labelledby="addApiDialogLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <h4 class="modal-title" id="addApiDialogLabel">请先选择API所属项目或新增项目</h4>
+      </div>
+      <div class="modal-body">
+        <div class="category">
+            <select name="category" id="J-cate-slt">
+                <% for( var i = 0; i < categorys.length; i++ ) { %>
+                <% var item = categorys[ i ] %>
+                    <option value="<%= item._id %>"><%= item.name %></option>
+                <% } %>
+                <option value="">新增</option>
+            </select>
+
+            <input id="J-new-cate-ipt" class="chide" type="text" name="category[name]" />
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" id="J-newapi-btn">增加接口</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 
 </body>
 </html>
