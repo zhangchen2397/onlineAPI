@@ -7,7 +7,9 @@ exports.list = function( req, res ) {
 
     Category.find( {
         _id: cateId
-    } ).populate( {
+    } )
+    .sort( 'meta.updateAt' )
+    .populate( {
         path: 'apis'
     } ).exec( function( err, categorys ) {
         if ( err ) {

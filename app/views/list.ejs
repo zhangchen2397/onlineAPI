@@ -1,23 +1,191 @@
-<script src="/js/lib/jquery-1.11.1.min.js"></script>
-<script src="/js/page/list.js"></script>
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="4g.qq.com api managment platform">
+    <meta name="keywords" content="API">
+    <meta name="author" content="samczhang@tencent.com">
+    <title><%= title %></title>
 
-<h1><%= title %></h1>
+    <link href="/js/lib/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <link href="/js/lib/bootstrap/css/bootstrap-theme.min.css" rel="stylesheet" type="text/css" />
+    <link href="/css/common.css" rel="stylesheet" type="text/css" />
 
-<h2><%= category.name %></h2>
+    <script src="/js/lib/jquery-1.11.1.min.js"></script>
+    <script src="/js/lib/bootstrap/js/bootstrap.min.js"></script>
+    <script src="/js/lib/ace/ace.js"></script>
+    <script src="/js/lib/beautify.js"></script>
 
-<ul id="J-api-list">
-    <% for( var i = 0; i < category.apis.length; i++ ) { %>
-        <% var item = category.apis[ i ] %>
-        <li>
-            <p><%= item.baseInfo %></p>
-            <p><%= item.requestField %></p>
-            <p><%= item.responseField %></p>
-            <p><%= item.responseData %></p>
-            <a href="/api/update/<%= item._id %>">编辑</a>
-            <a href="javascript:;" class="delete-btn" data-id="<%= item._id %>">删除</a>
-            <p>-----------------------------------</p>
-        </li>
-    <% } %>
-</ul>
+    <script src="/js/page/list.js"></script>
+</head>
 
+<body>
 
+<div id="header" class="navbar navbar-inverse" role="navigation">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/"><span style="font-size: 20px;">手腾</span>前端技术博客</a>
+        </div>
+
+        <div class="collapse navbar-collapse">
+            <ul class="nav navbar-nav">
+                <li class="active"><a href="/">接口文档</a></li>
+                <li><a href="http://gavinning.kf0309.3g.qq.com/team/home/" target="_blank">组件文档</a></li>
+                <li><a href="http://tapd.oa.com/MQQ_Media_Web/markdown_wikis#Javascript 编码规范" target="_blank">规范规范</a></li>
+                <li><a href="http://build.3gqq.com/" target="_blank">前端发布平台</a></li>
+
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-plus" style="margin-right:3px;"></span>发布新任务 <span class="caret"></span></a>
+                    <ul class="dropdown-menu" id="dropdown-menu" role="menu">
+                        <li><a href="/"><span class="glyphicon glyphicon-pencil" style="margin-right:5px;"></span>新建API</a></li>
+                        <li class="divider"></li>
+                        <li><a href="http://gavinning.kf0309.3g.qq.com/team/home/" target="_blank"><span class="glyphicon glyphicon-edit" style="margin-right:5px;"></span>新建组件文档</a></li>
+                        <li class="divider"></li>
+                        <li><a href="http://build.3gqq.com/" target="_blank"><span class="glyphicon glyphicon-send" style="margin-right:5px;"></span>上线管理</a></li>
+                    </ul>
+                </li>
+            </ul>
+
+            <form class="navbar-form navbar-right" role="search">
+                <div class="form-group">
+                    <input type="text" class="form-control" placeholder="Search">
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="container main-con">
+    <div class="cate-list">
+        <h3><a href="/list/<%= category._id %>"><%= category.name %></a></h3>
+
+        <div class="panel-group" id="api-list">
+            <% for( var j = 0; j < category.apis.length; j++ ) { %>
+                <% var item = category.apis[ j ] %>
+                <% var baseInfo = JSON.parse( item.baseInfo ) %>
+                <% var requestInfo = JSON.parse( item.requestField ) %>
+                <% var responseInfo = JSON.parse( item.responseField ) %>
+
+                <div class="panel panel-default panel-<%= item._id %>">
+                    <div class="panel-heading" data-toggle="collapse" data-parent="#accordion" href="#collapse<%= j %>">
+                        <div class="pull-right act">
+                            <a href="/api/update/<%= item._id %>" class="edit-btn"><button type="button" class="btn btn-info btn-xs">edit</button></a>
+                            <button type="button" class="btn btn-danger btn-xs delete-btn" data-title="<%= baseInfo.name %>" data-id="<%= item._id %>" data-toggle="modal" data-target="#deleteDialog">delete</button>
+                        </div>
+                        <div class="api-brf">
+                            <span class="label label-success"><%= baseInfo.method %></span>
+                            <span class="t"><%= baseInfo.name %></span>
+                            <span class="url"><%= baseInfo.url %></span>
+                            <span class="label label-default">by samczhang</span>
+                        </div>
+                    </div>
+
+                    <div id="collapse<%= j %>" class="panel-collapse collapse <% if ( j == 0 ) { %> in <% } %>">
+                        <div class="panel-body">
+                            <div class="box request-box">
+                                <h4><span class="glyphicon glyphicon-pushpin"></span>请求参数说明</h4>
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>字段名</th>
+                                            <th>必传</th>
+                                            <th>默认值</th>
+                                            <th>类型</th>
+                                            <th>说明</th>
+                                        </tr>
+                                    </thead>
+
+                                    <tbody>
+                                        <% for ( var ikey in requestInfo )  { %>
+                                            <% var rqt = requestInfo[ ikey ] %>
+                                            <% var iidx = 0 %>
+                                            <% iidx++ %>
+                                            <tr>
+                                                <td><%= iidx %></td>
+                                                <td><%= ikey %></td>
+                                                <td><%= rqt.isMust ? 'Y' : 'N' %></td>
+                                                <td><%= rqt.value || '-' %></td>
+                                                <td><%= rqt.type %></td>
+                                                <td><%= rqt.describe %></td>
+                                            </tr>
+                                        <% } %>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <div class="box request-box">
+                                <h4><span class="glyphicon glyphicon-pushpin"></span>响应字段说明</h4>
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>字段名</th>
+                                            <th>类型</th>
+                                            <th>返回值</th>
+                                            <th>说明</th>
+                                        </tr>
+                                    </thead>
+
+                                    <tbody>
+                                        <% for ( var jkey in responseInfo )  { %>
+                                            <% var rse = responseInfo[ jkey ] %>
+                                            <% var jidx = 0 %>
+                                            <% jidx++ %>
+                                            <tr>
+                                                <td><%= jidx %></td>
+                                                <td><%= jkey %></td>
+                                                <td><%= rse.type %></td>
+                                                <td><%= rse.value || '-' %></td>
+                                                <td><%= rse.describe %></td>
+                                            </tr>
+                                        <% } %>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <div class="box request-box">
+                                <h4><span class="glyphicon glyphicon-pushpin"></span>响应数据示例</h4>
+                                <pre id="editor<%= j %>" class="code-edit" data-json="<%= item.responseData %>" data-idx="<%= j %>"></pre>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <% } %>
+        </div>
+    </div>
+
+    <div class="add-api">
+        <a href="/api/add/?cateId=<%= category._id %>">
+            <button type="button" class="btn btn-primary btn-lg"><span class="glyphicon glyphicon-cloud-upload" style="margin-right:6px;"></span>新增接口</button>
+        </a>
+    </div>
+</div>
+
+<!-- confirm delete Modal -->
+<div class="modal fade" id="deleteDialog" tabindex="-1" role="dialog" aria-labelledby="deleteDialogLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <h4 class="modal-title" id="deleteDialogLabel">操作提示</h4>
+      </div>
+      <div class="modal-body"></div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" id="confirm-delete-btn">确认删除</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

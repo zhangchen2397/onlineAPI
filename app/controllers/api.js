@@ -9,9 +9,15 @@ exports.add = function( req, res ) {
 
     api.cateId = cateId;
 
-    res.render( 'api', {
-        title: '新增API',
-        api: api
+    Category.findById( cateId, function( err, category ) {
+        if ( err ) {
+            console.log( err );
+        }
+
+        res.render( 'api', {
+            title: '新增API - ' + category.name,
+            api: api
+        } );
     } );
 };
 
@@ -34,7 +40,7 @@ exports.save = function( req, res ) {
                     console.log( err );
                 }
 
-                res.redirect( '/' );
+                res.redirect( '/list/' + cateId );
             } );
         } );
     } else {
@@ -46,14 +52,14 @@ exports.save = function( req, res ) {
             }
 
             Category.findById( cateId, function( err, category ) {
-                category.apis.push( api._id );
+                category.apis.unshift( api._id );
 
                 category.save( function( err, category ) {
                     if ( err ) {
                         console.log( err );
                     }
 
-                    res.redirect( '/' );
+                    res.redirect( '/list/' + cateId );
                 } );
             } );
         } );
@@ -69,7 +75,7 @@ exports.update = function( req, res ) {
         }
 
         res.render( 'api', {
-            title: 'api更新',
+            title: JSON.parse( api.baseInfo ).name + ' - 更新',
             api: api
         } );
     } );

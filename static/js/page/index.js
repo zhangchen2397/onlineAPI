@@ -50,7 +50,7 @@ $( function() {
                     id = item.data( 'id' ),
                     title = item.data( 'title' );
 
-                $( '#deleteDialog .modal-body' ).html( '确定要删除' + title + '吗？' );
+                $( '#deleteDialog .modal-body' ).html( '确定要删除<strong> ' + title + ' </strong>吗？' );
 
                 me.deleteApiId = id;
 
@@ -111,6 +111,7 @@ $( function() {
                 me[ curEditor ] = ace.edit( curEditor );
                 me[ curEditor ].setTheme( 'ace/theme/twilight' );
                 me[ curEditor ].getSession().setMode( 'ace/mode/javascript' );
+                me[ curEditor ].setReadOnly( true );
             } );
         }
     };
