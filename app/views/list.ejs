@@ -105,9 +105,9 @@
                                     </thead>
 
                                     <tbody>
+                                        <% var iidx = 0 %>
                                         <% for ( var ikey in requestInfo )  { %>
                                             <% var rqt = requestInfo[ ikey ] %>
-                                            <% var iidx = 0 %>
                                             <% iidx++ %>
                                             <tr>
                                                 <td><%= iidx %></td>
@@ -136,9 +136,9 @@
                                     </thead>
 
                                     <tbody>
+                                        <% var jidx = 0 %>
                                         <% for ( var jkey in responseInfo )  { %>
                                             <% var rse = responseInfo[ jkey ] %>
-                                            <% var jidx = 0 %>
                                             <% jidx++ %>
                                             <tr>
                                                 <td><%= jidx %></td>

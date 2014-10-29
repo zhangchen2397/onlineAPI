@@ -35,7 +35,7 @@ $( function() {
                 var id = me.deleteApiId;
 
                 $.ajax( {
-                    type: 'DELETE',
+                    type: 'GET',
                     url: '/api/delete/' + id
                 } ).done( function( data ) {
                     if ( data.status.code === 0 ) {

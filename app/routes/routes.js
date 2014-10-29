@@ -22,8 +22,8 @@ module.exports = function( app ) {
 
     //异步接口
     app.post( '/category/add', Category.add );
-    app.delete( '/api/delete/:id', Api.delete );
+    app.get( '/api/delete/:id', Api.delete );
 
-    app.delete( '/category/delete/:id', Category.delete );
+    app.get( '/category/delete/:id', Category.delete );
     app.post( '/category/update/:id', Category.update );
 };
