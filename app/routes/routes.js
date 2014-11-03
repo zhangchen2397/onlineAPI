@@ -26,4 +26,6 @@ module.exports = function( app ) {
 
     app.get( '/category/delete/:id', Category.delete );
     app.post( '/category/update/:id', Category.update );
+
+    app.get( '/call/:id', Api.call );
 };

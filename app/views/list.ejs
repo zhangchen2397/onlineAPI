@@ -84,7 +84,7 @@
                             <span class="label label-success"><%= baseInfo.method %></span>
                             <span class="t"><%= baseInfo.name %></span>
                             <span class="url"><%= baseInfo.url %></span>
-                            <span class="label label-default">by samczhang</span>
+                            <span class="label label-default call-btn"><a href="/call/<%= item._id %>" target="_blank">模拟调用</a></span>
                         </div>
                     </div>
 
@@ -122,8 +122,9 @@
                                 </table>
                             </div>
 
+                            <% if ( item.responseField != '{}' ) { %>
                             <div class="box request-box">
-                                <h4><span class="glyphicon glyphicon-pushpin"></span>响应字段说明</h4>
+                                <h4><span class="glyphicon glyphicon-pushpin"></span>响应主要字段说明</h4>
                                 <table class="table table-striped">
                                     <thead>
                                         <tr>
@@ -151,6 +152,7 @@
                                     </tbody>
                                 </table>
                             </div>
+                            <% } %>
 
                             <div class="box request-box">
                                 <h4><span class="glyphicon glyphicon-pushpin"></span>响应数据示例</h4>

@@ -89,17 +89,28 @@ $( function() {
             $( '#submit-btn' ).on( 'click', function() {
                 $( '.json-ipt' ).each( function() {
                     var item = $( this ),
-                        itemVal = me[ item.data( 'item' ) ].getValue();
+                        itemVal = me[ item.data( 'item' ) ].getValue() || '{}';
 
                     item.val( itemVal );
                 } );
+
+                if ( $( '.ace_error' ).length ) {
+                    alert( 'JSON格式错误，请检查！' );
+                    return false;
+                }
+
+                if ( $( '.ace_warning' ).length ) {
+                    alert( 'JSON格式字符串必做用双引号，请检查！' );
+                    return false;
+                }
 
                 $( '#api-form' ).submit();
             } );
         },
 
         _insAce: function( name, id ) {
-            var editEl = $( '#' + id ),
+            var me = this,
+                editEl = $( '#' + id ),
                 editVal = editEl.data( 'json' );
 
             //setValue
@@ -110,9 +121,14 @@ $( function() {
             editEl.html( js_beautify( JSON.stringify( editVal ) ) );
 
             //init ace
-            this[ name ] = ace.edit( id );
+            window.aceins = this[ name ] = ace.edit( id );
             this[ name ].setTheme( 'ace/theme/twilight' );
             this[ name ].getSession().setMode( 'ace/mode/javascript' );
+
+            this[ name ].on( 'blur', function( e ) {
+                me[ name ].setValue( js_beautify( me[ name ].getValue() ) );
+                me[ name ].clearSelection();
+            } );
         }
     };
 

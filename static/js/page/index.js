@@ -57,6 +57,10 @@ $( function() {
                 $( '#deleteDialog' ).modal( 'show' );
             } );
 
+            $( '.call-btn' ).on( 'click', function( event ) {
+                event.stopPropagation();
+            } );
+
             $( '#confirm-delete-btn' ).on( 'click', function() {
                 var id = me.deleteApiId;
 

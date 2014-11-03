@@ -104,3 +104,15 @@ exports.delete = function( req, res ) {
         res.json( responseJson );
     } );
 };
+
+exports.call = function( req, res ) {
+    var id = req.params.id;
+    
+    Api.findById( id, function( err, api ) {
+        if ( err ) {
+            console.log( err );
+        }
+
+        res.json( JSON.parse( api.responseData ) );
+    } );
+};

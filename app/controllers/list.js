@@ -11,13 +11,15 @@ exports.list = function( req, res ) {
     .sort( 'meta.updateAt' )
     .populate( {
         path: 'apis'
-    } ).exec( function( err, categorys ) {
+    } )
+    .sort( 'meta.updateAt' )
+    .exec( function( err, categorys ) {
         if ( err ) {
             console.log( err );
         }
 
         res.render( 'list', {
-            title: '列表页',
+            title: 'API接口文档 - ' + categorys[ 0 ].name,
             category: categorys[ 0 ]
         } );
     } );

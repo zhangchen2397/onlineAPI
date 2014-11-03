@@ -224,3 +224,8 @@ body {
     line-height: 40px;
 }
 
+.call-btn a, .copy-btn a {
+    color: #FFFFFF;
+    text-decoration: none;
+}
+
