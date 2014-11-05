@@ -15,8 +15,6 @@ onlineAPI
 
 ![api demo](https://raw.githubusercontent.com/zhangchen2397/doc/master/zc/onlineAPI/API_index.fw.png)
 
-![api demo](https://raw.githubusercontent.com/zhangchen2397/doc/master/zc/onlineAPI/API_list.fw.png)
-
 ###使用说明
 
 该平台采用`nodejs` + `mongodb`搭建，启动服务前请确定安装node及mongodb的环境
