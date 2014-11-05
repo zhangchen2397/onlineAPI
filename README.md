@@ -17,7 +17,7 @@ onlineAPI
 
 ###使用说明
 
-该平台采用`nodejs` + `mongodb`搭建，启动服务前请确定安装node及mongodb的环境
+该平台采用`nodejs` + `mongodb`搭建，启动服务前请确保已安装好node及mongodb的环境
 
 1. clone代码至本地
 
