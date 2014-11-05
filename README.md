@@ -13,7 +13,7 @@ onlineAPI
 
 [点击查看在线demo](http://api.kf0309.3g.qq.com)
 
-![api demo](https://raw.githubusercontent.com/zhangchen2397/doc/master/zc/onlineAPI/API_index.fw.png)
+![api demo](https://raw.githubusercontent.com/zhangchen2397/doc/master/zc/onlineAPI/API_list.fw.png)
 
 ###使用说明
 
@@ -21,25 +21,25 @@ onlineAPI
 
 1. clone代码至本地
 
-```
-git clone https://github.com/zhangchen2397/onlineAPI.git onlineAPI
-```
+    ```
+    git clone https://github.com/zhangchen2397/onlineAPI.git onlineAPI
+    ```
 
 2. 安装依赖
 
-```
-npm install
-```
+    ```
+    npm install
+    ```
 
 3. 启动服务
 
-```
-node app.js
-```
+    ```
+    node app.js
+    ```
 
 4. 访问
 
-```
-http://localhost:1337
-```
+    ```
+    http://localhost:1337
+    ```
 
