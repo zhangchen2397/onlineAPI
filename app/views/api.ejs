@@ -99,7 +99,12 @@
 
         <div class="add-api">
             <button type="button" class="btn btn-primary btn-lg" id="submit-btn">
-                <span class="glyphicon glyphicon-cloud-upload" style="margin-right:6px;"></span>新增接口
+                <span class="glyphicon glyphicon-cloud-upload" style="margin-right:6px;"></span>
+                <% if ( api._id ) { %>
+                    更新接口
+                <% } else { %>
+                    新增接口
+                <% } %>
             </button>
         </div>
     </form>
