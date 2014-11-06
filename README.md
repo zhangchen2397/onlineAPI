@@ -11,8 +11,6 @@ onlineAPI
 
 ### 看长什么样子
 
-[点击查看demo](api.kf0309.3g.qq.com)
-
 ![api demo](https://raw.githubusercontent.com/zhangchen2397/doc/master/zc/onlineAPI/demo.fw.png)
 
 ###使用说明
