@@ -11,7 +11,7 @@ onlineAPI
 
 ### 看长什么样子
 
-![api demo](https://raw.githubusercontent.com/zhangchen2397/doc/master/zc/onlineAPI/demo.fw.png)
+![api demo](https://github.com/zhangchen2397/doc/blob/master/onlineAPI/demo.fw.png?raw=true)
 
 ###使用说明
 
